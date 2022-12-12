@@ -28,6 +28,18 @@ export const cellSlice = createSlice({
   name: "cell",
   initialState,
   reducers: {
+    initNotebook(state, action: PayloadAction<void>) {
+      if (state.order.length > 0) {
+        return;
+      }
+      const cell: Cell = {
+        content: "",
+        id: uuidv4(),
+        type: "text",
+      };
+      state.data[cell.id] = cell;
+      state.order.push(cell.id);
+    },
     updateCell(state, action: PayloadAction<UpdateCellPayload>) {
       const { id, content } = action.payload;
       state.data[id].content = content;

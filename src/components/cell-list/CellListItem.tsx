@@ -16,7 +16,7 @@ const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
     child = <MarkdownEditor cell={cell} />;
   }
   return (
-    <div>
+    <div className="relative overflow-hidden">
       <ActionBar id={cell.id} />
       {child}
     </div>

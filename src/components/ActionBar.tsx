@@ -1,7 +1,8 @@
 import React from "react";
 import { useTypedDispatch } from "../hooks/useTypedRedux";
 import { cellActions } from "../store";
-
+import { BsArrowUp, BsArrowDown } from "react-icons/bs";
+import { MdDelete } from "react-icons/md";
 interface ActionBarProps {
   id: string;
 }
@@ -11,21 +12,25 @@ const ActionBar: React.FC<ActionBarProps> = ({ id }) => {
   const dispatch = useTypedDispatch();
 
   return (
-    <div className="flex gap-2 justify-end">
+    <div className="flex items-center gap-2 justify-end absolute top-0 right-2 z-10 h-full max-h-[40px]">
       <button
-        className="border px-4"
         onClick={() => dispatch(moveCell({ id, direction: "up" }))}
+        className="hover:bg-gray-200 p-2"
       >
-        Up
+        <BsArrowUp />
       </button>
+
       <button
-        className="border px-4"
+        className="hover:bg-gray-200 p-2"
         onClick={() => dispatch(moveCell({ id, direction: "down" }))}
       >
-        Down
+        <BsArrowDown />
       </button>
-      <button className="border px-4" onClick={() => dispatch(deleteCell(id))}>
-        Delete
+      <button
+        className="hover:bg-gray-200 p-2"
+        onClick={() => dispatch(deleteCell(id))}
+      >
+        <MdDelete />
       </button>
     </div>
   );
