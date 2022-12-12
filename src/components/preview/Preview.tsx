@@ -61,14 +61,17 @@ const Preview: React.FC<PreviewProps> = ({ code, error }) => {
   }, [code]);
 
   return (
-    <div className="preview-container h-full relative flex-grow  border-vs-dark">
+    <div className="preview-container h-full relative flex-grow overflow-hidden">
+      <div className="bg-slate-100 text-sm py-1 px-4 m-1 mx-0 font-mono text-gray-500 rounded max-h-[32px]">
+        http://localhost:myapp
+      </div>
       <iframe
         ref={iframeRef}
         srcDoc={initialHTMLDoc}
         title="codeOutput"
         sandbox="allow-scripts"
-        height={"100%"}
         width={"100%"}
+        className="h-[calc(100%-32px)]"
       ></iframe>
       {error && (
         <div className="absolute top-3 left-3 text-red-500">{error}</div>

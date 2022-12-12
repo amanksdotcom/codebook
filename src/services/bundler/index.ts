@@ -21,7 +21,6 @@ const esbuilder = async (rawCode: string) => {
       write: false,
       plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
       define: {
-        "process.env.NODE_ENV": '"production"',
         global: "window",
       },
     });

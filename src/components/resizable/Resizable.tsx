@@ -10,7 +10,7 @@ interface ResizableProps {
 
 const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
   const { innerHeight, innerWidth } = useWindowDimensions();
-  const [width, setWidth] = useState(window.innerWidth * 0.75);
+  const [width, setWidth] = useState(window.innerWidth * 0.50);
 
   useEffect(() => {
     if (width > innerWidth * 0.75) {

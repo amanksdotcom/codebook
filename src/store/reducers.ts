@@ -2,8 +2,8 @@ import { AnyAction, combineReducers, Reducer } from "@reduxjs/toolkit";
 import { bundleSlice, cellSlice } from "./slices";
 
 const combinedReducers = combineReducers({
-  bundle: bundleSlice.reducer,
-  cell: cellSlice.reducer,
+  bundles: bundleSlice.reducer,
+  cells: cellSlice.reducer,
 });
 
 export type RootState = ReturnType<typeof combinedReducers>;

@@ -52,4 +52,5 @@ export const bundleSlice = createSlice({
 
 export const bundleActions = {
   ...bundleSlice.actions,
+  createBundle,
 };

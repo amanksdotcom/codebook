@@ -1,65 +1,72 @@
 import { useEffect, useState } from "react";
 import esbuilder from "../../services/bundler";
 import { useTypedSelector, useTypedDispatch } from "../../hooks/useTypedRedux";
-// import { Cell } from "../../state";
+import { bundleActions, Cell, cellActions } from "../../store";
 import CodeEditor from "../code-editor/CodeEditor";
 import Preview from "../preview/Preview";
 import Resizable from "../resizable/Resizable";
-// import styles from "./CodeCell.module.css";
 
 interface CodeCellProps {
-  cell: any;
+  cell: Cell;
 }
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
-  // const { updateCell, createBundle } = useActions();
-  // const bundle = useTypedSelector((state) => state.bundles[cell.id]);
+  const { createBundle } = bundleActions;
+  const dispatch = useTypedDispatch();
 
-  // useEffect(() => {
-  //   const showFunc = `
-  //   import React from 'react';
-  //   import ReactDOM from 'react-dom/client';
-  //   const show = (value) => {
-  //     const rootEl = document.querySelector('#root');
-  //     if(typeof value === 'object') {
-  //       if(value.$$typeof && value.props) {
-  //         ReactDOM.createRoot(rootEl).render(value, root);
-  //       }
-  //       rootEl.innerHTML = JSON.stringify(value);
-  //     } else {
-  //       rootEl.innerHTML = value;
-  //     }
-  //   };
-  //   `;
-  //   if (!bundle) {
-  //     createBundle(cell.id, showFunc + cell.content);
-  //     return;
-  //   }
-  //   const timer = setTimeout(async () => {
-  //     createBundle(cell.id, showFunc + cell.content);
-  //   }, 1000);
+  const bundle = useTypedSelector((state) => state.bundles[cell.id]);
 
-  //   return () => {
-  //     clearTimeout(timer);
-  //   };
-  // }, [cell.content, cell.id, createBundle]);
+  useEffect(() => {
+    const showFunc = `
+    import React from 'react';
+    import ReactDOM from 'react-dom/client';
+    const show = (value) => {
+      const rootEl = document.querySelector('#root');
+      if(typeof value === 'object') {
+        if(value.$$typeof && value.props) {
+          ReactDOM.createRoot(rootEl).render(value, root);
+        }
+        rootEl.innerHTML = JSON.stringify(value);
+      } else {
+        rootEl.innerHTML = value;
+      }
+    };
+    `;
+    if (!bundle) {
+      dispatch(
+        createBundle({ cellId: cell.id, input: showFunc + cell.content })
+      );
+      return;
+    }
+    const timer = setTimeout(async () => {
+      dispatch(
+        createBundle({ cellId: cell.id, input: showFunc + cell.content })
+      );
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [cell.content, cell.id]);
 
   return (
-    <div className="p-4 bg-slate-500">
+    <div className="p-1 mt-4 bg-vs-dark rounded-lg">
       <Resizable direction="vertical">
         <div className="flex h-[calc(100%-10px)] bg-vs-dark">
           <Resizable direction="horizontal">
             <CodeEditor
               initialValue={cell.content}
               onChange={(value) => {
-                console.log(value);
+                dispatch(
+                  cellActions.updateCell({ content: value, id: cell.id })
+                );
               }}
             />
           </Resizable>
-          {false ? (
+          {!bundle || bundle.loading ? (
             <div>Loading...</div>
           ) : (
-            <Preview code={"console.logg(12)"} error={""} />
+            <Preview code={bundle.code} error={bundle.err} />
           )}
         </div>
       </Resizable>

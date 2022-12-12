@@ -1,7 +1,7 @@
 .react-resizable-handle {
   display: block;
-  /* background-color: theme("colors.vs-dark"); */
-  background-color: aqua;
+  background-color: theme("colors.vs-dark");
+  /* background-color: aqua; */
   background-repeat: no-repeat;
   background-position: 50%;
 }
@@ -25,6 +25,7 @@
   min-width: 10px;
   height: 100%;
   cursor: col-resize;
+  transition: all .2s;
 }
 
 .react-resizable-handle-e:hover {
