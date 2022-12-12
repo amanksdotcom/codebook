@@ -2,7 +2,7 @@ import React from "react";
 import { Cell } from "../../store";
 import ActionBar from "../ActionBar";
 import CodeCell from "../code-cell/CodeCell";
-// import TextEditor from "../text-editor";
+import MarkdownEditor from "../md-editor/MDEditor";
 
 interface CellListItemProps {
   cell: Cell;
@@ -13,7 +13,7 @@ const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
   if (cell.type === "code") {
     child = <CodeCell cell={cell} />;
   } else {
-    child = <CodeCell cell={cell} />;
+    child = <MarkdownEditor cell={cell} />;
   }
   return (
     <div>
