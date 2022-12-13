@@ -1,6 +1,6 @@
 import React from "react";
 import { Cell } from "../../store";
-import ActionBar from "../ActionBar";
+import ActionBar from "../action-bar/ActionBar";
 import CodeCell from "../code-cell/CodeCell";
 import MarkdownEditor from "../md-editor/MDEditor";
 
@@ -16,8 +16,8 @@ const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
     child = <MarkdownEditor cell={cell} />;
   }
   return (
-    <div className="relative overflow-hidden">
-      <ActionBar id={cell.id} />
+    <div className="relative overflow-hidden group">
+      <ActionBar id={cell.id} cellType={cell.type} />
       {child}
     </div>
   );

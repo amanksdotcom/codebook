@@ -11,14 +11,7 @@ const AddCell: React.FC<AddCellProps> = ({ prevCellId }) => {
     dispatch(insertCellAfter({ id: prevCellId, type }));
   };
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        gap: "4rem",
-        margin: "8px 0",
-      }}
-    >
+    <div id="add-cell" className="flex gap-2">
       <button onClick={() => insertCell("text")}>Text</button>
       <button onClick={() => insertCell("code")}>Code</button>
     </div>

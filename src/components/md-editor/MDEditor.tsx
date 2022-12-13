@@ -78,7 +78,9 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ cell }) => {
           hideToolbar={true}
           highlightEnable={true}
           visibleDragbar={false}
-          className={`${isCellEmpty() && "py-2"} ${editing && "border"}`}
+          className={`${isCellEmpty() && "py-2"} ${
+            editing && "border border-blue-400"
+          }`}
           minHeight={30}
         />
       </div>
@@ -98,6 +100,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ cell }) => {
       }}
       onDoubleClick={enableEditing}
       className={`shadow`}
+      tabIndex={0}
     >
       <div data-color-mode="light">
         <MDEditor.Markdown

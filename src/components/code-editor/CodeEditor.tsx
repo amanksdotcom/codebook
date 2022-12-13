@@ -40,7 +40,11 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
   return (
     <div className="h-[calc(100%-32px)] w-[calc(100%-9px)] bg-vs-dark max-w-6xl ">
       <div className="flex px-10 py-2 justify-end gap-4 items-center">
-        <button onClick={onFormatClick} className="text-white">
+        <button
+          onClick={onFormatClick}
+          className="text-white"
+          title="format code"
+        >
           <BsCodeSlash />
         </button>
         <button>
