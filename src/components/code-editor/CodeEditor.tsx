@@ -10,12 +10,42 @@ interface CodeEditorProps {
   onChange(value: string): void;
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
+export const CodeEditor: React.FC<CodeEditorProps> = ({
+  initialValue,
+  onChange,
+}) => {
   const editorRef = useRef<any>();
 
   const onMount: OnMount = (editor, monaco) => {
     editor.onDidChangeModelContent(() => {
       editorRef.current = editor;
+      editor.addAction({
+        // An unique identifier of the contributed action.
+        id: "my-unique-id",
+
+        // A label of the action that will be presented to the user.
+        label: "My Label!!!",
+
+        // An optional array of keybindings for the action.
+        keybindings: [
+          monaco.KeyMod.CtrlCmd | monaco.KeyCode.F10,
+          // chord
+          monaco.KeyMod.chord(
+            monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyK,
+            monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyM
+          ),
+        ],
+
+        contextMenuGroupId: "navigation",
+
+        contextMenuOrder: 1.5,
+
+        // Method that will be executed when the action is triggered.
+        // @param editor The editor instance is passed in as a convenience
+        run: function (ed) {
+          alert("i'm running => " + ed.getPosition());
+        },
+      });
       onChange(editor.getValue());
     });
   };
@@ -56,7 +86,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
         value={initialValue}
         language="javascript"
         theme="vs-dark"
-        // height={400}
         options={{
           wordWrap: "on",
           minimap: { enabled: false },
@@ -71,5 +100,3 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
     </div>
   );
 };
-
-export default CodeEditor;

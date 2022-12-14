@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
-import { CellTypes } from "../../store";
+import { CellTypes } from "../../types";
 
 interface ActionButtonProps {
   onClick: () => void;

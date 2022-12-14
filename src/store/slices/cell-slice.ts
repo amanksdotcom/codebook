@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Cell } from "../cell";
+import { ICell } from "../../types";
 import {
   DeleteCellPayload,
   InsertCellAfterPayload,
@@ -13,7 +13,7 @@ interface CellState {
   error: string | null;
   order: string[];
   data: {
-    [key: string]: Cell;
+    [key: string]: ICell;
   };
 }
 
@@ -32,7 +32,7 @@ export const cellSlice = createSlice({
       if (state.order.length > 0) {
         return;
       }
-      const cell: Cell = {
+      const cell: ICell = {
         content: "",
         id: uuidv4(),
         type: "text",
@@ -65,7 +65,7 @@ export const cellSlice = createSlice({
     },
 
     insertCellAfter(state, action: PayloadAction<InsertCellAfterPayload>) {
-      const cell: Cell = {
+      const cell: ICell = {
         content: "",
         type: action.payload.type,
         id: uuidv4(),

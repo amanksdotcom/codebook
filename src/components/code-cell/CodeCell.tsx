@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import esbuilder from "../../services/bundler";
 import { useTypedSelector, useTypedDispatch } from "../../hooks/useTypedRedux";
-import { bundleActions, Cell, cellActions } from "../../store";
-import CodeEditor from "../code-editor/CodeEditor";
-import Preview from "../preview/Preview";
-import Resizable from "../resizable/Resizable";
-
+import { bundleActions, cellActions } from "../../store";
+import { ICell } from "../../types";
+import { Resizable } from "../resizable";
+import { CodeEditor } from "../code-editor";
+import { Preview } from "../preview";
+import { Spinner } from "../Spinner";
 interface CodeCellProps {
-  cell: Cell;
+  cell: ICell;
 }
 
-const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
+export const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const { createBundle } = bundleActions;
   const dispatch = useTypedDispatch();
 
@@ -18,19 +19,30 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
   useEffect(() => {
     const showFunc = `
-    import React from 'react';
-    import ReactDOM from 'react-dom/client';
     const show = (value) => {
       const rootEl = document.querySelector('#root');
       if(typeof value === 'object') {
         if(value.$$typeof && value.props) {
           ReactDOM.createRoot(rootEl).render(value, root);
+          return;
         }
         rootEl.innerHTML = JSON.stringify(value);
       } else {
         rootEl.innerHTML = value;
       }
     };
+    const renderReact = (component) => {
+      // const {default: React} = await import('react');
+      // const {default: ReactDOM} = await import('react-dom/client');
+      // const rootEl = document.querySelector('#root');
+      // ReactDOM.createRoot(rootEl).render(component);
+      import('react').then(({default: React})=>{
+        import('react-dom/client').then(({default: ReactDOM})=>{
+          const rootEl = document.querySelector('#root');
+          ReactDOM.createRoot(rootEl).render(component);
+        })
+      })
+    }
     `;
     if (!bundle) {
       dispatch(
@@ -50,7 +62,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   }, [cell.content, cell.id]);
 
   return (
-    <div className="p-1 mt-4 bg-vs-dark rounded-lg">
+    <div className="p-1  bg-vs-dark rounded-lg">
       <Resizable direction="vertical">
         <div className="flex h-[calc(100%-10px)] bg-vs-dark">
           <Resizable direction="horizontal">
@@ -64,7 +76,9 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
             />
           </Resizable>
           {!bundle || bundle.loading ? (
-            <div>Loading...</div>
+            <div className="bg-white h-full w-full grid place-items-center">
+              <Spinner />
+            </div>
           ) : (
             <Preview code={bundle.code} error={bundle.err} />
           )}
@@ -73,5 +87,3 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     </div>
   );
 };
-
-export default CodeCell;

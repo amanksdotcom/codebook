@@ -1,87 +1,73 @@
 import MDEditor from "@uiw/react-md-editor";
 import { useEffect, useRef, useState } from "react";
 import { useTypedDispatch } from "../../hooks/useTypedRedux";
-import { Cell, cellActions } from "../../store";
-import styles from "./MDEditor.module.css";
-
+import { cellActions } from "../../store";
+import { ICell } from "../../types";
 interface MarkdownEditorProps {
-  cell: Cell;
+  cell: ICell;
 }
 
-const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ cell }) => {
-  const [editing, setEditing] = useState(false);
+export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ cell }) => {
+  const [editing, setEditing] = useState(true);
+  const [inFocus, setInFocus] = useState(true);
   const dispatch = useTypedDispatch();
   const { updateCell } = cellActions;
   const ref = useRef<HTMLDivElement | null>(null);
-  const [inFocus, setInFocus] = useState(false);
 
   const isCellEmpty = () => !cell.content.trim();
-
-  useEffect(() => {
-    const listener = (event: MouseEvent) => {
-      if (
-        ref.current &&
-        event.target &&
-        ref.current.contains(event.target as Node)
-      ) {
-        console.log("in");
-        return;
-      }
-      if (isCellEmpty()) {
-        console.log("editing false");
-        setEditing(false);
-      } else {
-        console.log("out");
-      }
-    };
-    document.addEventListener("click", listener, { capture: true });
-    return () => {
-      document.removeEventListener("click", listener, { capture: true });
-    };
-  }, []);
 
   useEffect(() => {
     if (!editing || !ref.current) {
       return;
     }
-    const shortcut = (e: KeyboardEvent) => {
+    const keyboardShortcuts = function (
+      this: HTMLTextAreaElement,
+      e: KeyboardEvent
+    ) {
       if (e.shiftKey && e.key === "Enter") {
+        // removes extra newline at end added by shift+enter command
+        const trimmedVal = cell.content.substring(0, cell.content.length - 1);
+        dispatch(updateCell({ id: cell.id, content: trimmedVal }));
+        if (isCellEmpty()) {
+          this.blur();
+          return;
+        }
         setEditing(false);
       }
     };
+
     const textarea: HTMLTextAreaElement = ref.current.querySelector(
       ".w-md-editor-text-input"
     ) as HTMLTextAreaElement;
     textarea.setAttribute("data-gramm", "false");
-    textarea.addEventListener("keyup", shortcut, false);
+    textarea.addEventListener("keyup", keyboardShortcuts, false);
     return () => {
-      textarea.removeEventListener("keyup", shortcut);
+      textarea.removeEventListener("keyup", keyboardShortcuts);
     };
-  }, [editing]);
-
-  // useEffect(() => {
-  //   console.log(cell.content);
-  // }, [cell.content]);
+  }, [editing, cell.content]);
 
   if (editing) {
     return (
-      <div ref={ref} className={styles.markdownEditor}>
+      <div ref={ref}>
         <MDEditor
           data-color-mode="light"
           autoFocus={true}
           value={cell.content}
-          onChange={(v) =>
-            dispatch(updateCell({ id: cell.id, content: v || "" }))
-          }
+          onChange={(v) => {
+            const str = v || "";
+            dispatch(updateCell({ id: cell.id, content: str }));
+          }}
           preview="edit"
           height={"100%"}
           hideToolbar={true}
           highlightEnable={true}
           visibleDragbar={false}
-          className={`${isCellEmpty() && "py-2"} ${
-            editing && "border border-blue-400"
-          }`}
+          className={`${isCellEmpty() && "py-2"} ${editing && "border"} ${
+            inFocus && "border-blue-400"
+          } ${editing && !inFocus && "bg-gray-100"}`}
           minHeight={30}
+          onFocus={() => setInFocus(true)}
+          onBlur={() => setInFocus(false)}
         />
       </div>
     );
@@ -99,7 +85,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ cell }) => {
         }
       }}
       onDoubleClick={enableEditing}
-      className={`shadow`}
+      className={``}
       tabIndex={0}
     >
       <div data-color-mode="light">
@@ -113,5 +99,3 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ cell }) => {
     </div>
   );
 };
-
-export default MarkdownEditor;

@@ -1,14 +1,15 @@
 import React from "react";
-import { Cell } from "../../store";
+import { ICell } from "../../types";
 import ActionBar from "../action-bar/ActionBar";
-import CodeCell from "../code-cell/CodeCell";
-import MarkdownEditor from "../md-editor/MDEditor";
+import { CodeCell } from "../code-cell";
+import { MarkdownEditor } from "../md-editor";
 
-interface CellListItemProps {
-  cell: Cell;
+
+interface CellProps {
+  cell: ICell;
 }
 
-const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
+export const Cell: React.FC<CellProps> = ({ cell }) => {
   let child: JSX.Element;
   if (cell.type === "code") {
     child = <CodeCell cell={cell} />;
@@ -16,11 +17,9 @@ const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
     child = <MarkdownEditor cell={cell} />;
   }
   return (
-    <div className="relative overflow-hidden group">
+    <div className="relative group my-6">
       <ActionBar id={cell.id} cellType={cell.type} />
       {child}
     </div>
   );
 };
-
-export default CellListItem;

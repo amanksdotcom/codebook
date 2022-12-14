@@ -8,7 +8,7 @@ const esbuilder = async (rawCode: string) => {
   if (!serviceStarted) {
     await esbuild.initialize({
       worker: true,
-      wasmURL: "https://unpkg.com/esbuild-wasm@^0.16.4/esbuild.wasm",
+      wasmURL: "https://unpkg.com/esbuild-wasm@0.16.4/esbuild.wasm",
     });
 
     serviceStarted = true;

@@ -41,7 +41,7 @@ const initialHTMLDoc = `
 </html>
 `;
 
-const Preview: React.FC<PreviewProps> = ({ code, error }) => {
+export const Preview: React.FC<PreviewProps> = ({ code, error }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const Preview: React.FC<PreviewProps> = ({ code, error }) => {
   return (
     <div className="preview-container h-full relative flex-grow overflow-hidden">
       <div className="bg-slate-100 text-sm py-1 px-4 m-1 mx-0 font-mono text-gray-500 rounded max-h-[32px]">
-        http://localhost:myapp
+        App.jsx
       </div>
       <iframe
         ref={iframeRef}
@@ -79,5 +79,3 @@ const Preview: React.FC<PreviewProps> = ({ code, error }) => {
     </div>
   );
 };
-
-export default Preview;

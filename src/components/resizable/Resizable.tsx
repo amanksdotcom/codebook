@@ -8,7 +8,7 @@ interface ResizableProps {
   children?: React.ReactNode;
 }
 
-const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
+export const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
   const { innerHeight, innerWidth } = useWindowDimensions();
   const [width, setWidth] = useState(window.innerWidth * 0.50);
 
@@ -43,4 +43,3 @@ const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
   return <ResizableBox {...resizableProps}>{children}</ResizableBox>;
 };
 
-export default Resizable;

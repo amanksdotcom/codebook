@@ -1,4 +1,4 @@
-import { type CellTypes } from "../cell";
+import { CellTypes } from "../../types";
 
 export interface BundleStartPayload {
   cellId: string;
