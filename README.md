@@ -79,7 +79,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-Aman K. Singh - [@amanksdotcom](https://twitter.com/amanksdotcom) - amanks.dev@gmail.com
+Aman K. Singh - [@amanksdotcom](https://twitter.com/amanksdotcom) - amanksingh.dev@gmail.com
 
 Project Link: [https://github.com/amanksdotcom/codebook](https://github.com/amanksdotcom/codebook)
 
