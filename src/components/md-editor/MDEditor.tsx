@@ -42,9 +42,14 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ cell }) => {
     textarea.setAttribute("data-gramm", "false");
     textarea.addEventListener("keyup", keyboardShortcuts, false);
     return () => {
-      textarea.removeEventListener("keyup", keyboardShortcuts);
+      textarea.removeEventListener("keyup", keyboardShortcuts, false);
     };
   }, [editing, cell.content]);
+
+
+  const enableEditing = () => {
+    setEditing(true);
+  };
 
   if (editing) {
     return (
@@ -72,10 +77,6 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ cell }) => {
       </div>
     );
   }
-
-  const enableEditing = () => {
-    setEditing(true);
-  };
 
   return (
     <div
